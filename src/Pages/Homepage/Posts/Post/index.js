@@ -51,24 +51,28 @@ function Post({ post, setcurrentid }) {
     if (likes.length > 0) {
       return likes.find((like) => like === userId) ? (
         <>
-          <ThumbUpAlt fontSize="small" />
-          &nbsp;
-          {likes.length > 2
-            ? `you and ${likes.length - 1} others`
-            : `${likes.length} Like${likes.length > 1 ? "s" : ""}`}{" "}
+          <ThumbUpAlt fontSize="small" color="primary" />
+          <Typography color={"primary"}>
+            &nbsp;
+            {likes.length > 2
+              ? `you and ${likes.length - 1} others`
+              : `${likes.length} Like${likes.length > 1 ? "s" : ""}`}{" "}
+          </Typography>
         </>
       ) : (
         <>
-          <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{likes.length} {likes.length > 1 ? "Likes" : "Like"}
+          <ThumbUpAltOutlined fontSize="small" color="primary" />
+          <Typography color={"primary"}>
+            &nbsp;{likes.length} {likes.length > 1 ? "Likes" : "Like"}
+          </Typography>
         </>
       );
     }
 
     return (
       <>
-        <ThumbUpAltOutlined fontSize="small" />
-        &nbsp;Like
+        <ThumbUpAltOutlined fontSize="small" color="primary" />
+        <Typography color={"primary"}>&nbsp;Like</Typography>
       </>
     );
   };
@@ -81,99 +85,88 @@ function Post({ post, setcurrentid }) {
         borderRadius: "15px",
         justifyContent: "space-between",
         height: "100%",
+        width: "100%",
         position: "relative",
       }}
     >
-      <ButtonBase
-        onClick={viewDetails}
-        sx={{ display: "block", textAlign: "initial" }}
-      >
-        <CardMedia
-          image={post.selectedFile}
-          title={post.title}
-          sx={{
-            backgroundColor: "rgba(0,0,0,0.5)",
-            backgroundBlendMode: "darken",
-            height: "150px",
-          }}
-        />
+      <CardMedia
+        image={post.selectedFile}
+        title={post.title}
+        sx={{
+          backgroundColor: "rgba(0,0,0,0.5)",
+          backgroundBlendMode: "darken",
+          height: "150px",
+          width: "100%",
+        }}
+      />
 
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          position: "absolute",
+          padding: "15px",
+          height: "100%",
+          top: 0,
+          left: 0,
+        }}
+      >
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            position: "absolute",
-            padding: "15px",
-            height: "100%",
-            top: 0,
-            left: 0,
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              color={"white"}
-              sx={{ fontWeight: "" }}
-              fontWeight="bold"
+          <Typography sx={{ color: "white" }} fontWeight="bold">
+            {post.name.split(" ")[0].length > 10
+              ? `${post.name.split(" ")[0]} ...`
+              : `${post.name.split(" ")[0]} ${post.name
+                  .split(" ")[1]
+                  .slice(0, 3)}...`}
+          </Typography>
+
+          {(user?.result?._id === post.creator ||
+            user?.result?.sub === post.creator) && (
+            <IconButton
+              sx={{ color: "white" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setcurrentid(post._id);
+              }}
             >
-              {post.name.split(" ")[0].length > 10
-                ? `${post.name.split(" ")[0]} ...`
-                : `${post.name.split(" ")[0]} ${post.name
-                    .split(" ")[1]
-                    .slice(0, 3)}...`}
-            </Typography>
-
-            {(user?.result?._id === post.creator ||
-              user?.result?.sub === post.creator) && (
-              <IconButton
-                sx={{ color: "white" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setcurrentid(post._id);
-                }}
-              >
-                <MoreHoriz color="red" />
-              </IconButton>
-            )}
-          </Box>
-
-          <Box>
-            <Typography sx={{ color: "white" }}>
-              {moment(post.createdAt).fromNow()}
-            </Typography>
-          </Box>
+              <MoreHoriz color="white" />
+            </IconButton>
+          )}
         </Box>
 
-        <Box margin={"10px"}>
-          <Typography variant="body2" color="textSecondary" component="h2">
-            {post.tags.map((tag) => `#${tag} `)}
-          </Typography>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="h2"
-            padding={"0 16px"}
-          >
-            {post.title}
+        <Box>
+          <Typography sx={{ color: "white" }}>
+            {moment(post.createdAt).fromNow()}
           </Typography>
         </Box>
+      </Box>
 
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {post.message.substring(0, 50)}&nbsp;
-            <Link style={{ textDecoration: "none" }} to={`/post/${post._id}`}>
-              <Typography color="secondary">
-                <strong>See more . . .</strong>
-              </Typography>
-            </Link>
-          </Typography>
-        </CardContent>
-      </ButtonBase>
+      <Box margin={"10px"}>
+        <Typography variant="body2" color="primary" component="h2">
+          {post.tags.map((tag) => `#${tag} `)}
+        </Typography>
+        <Typography gutterBottom variant="h5" component="h2" padding={"0 16px"}>
+          {post.title}
+        </Typography>
+      </Box>
+
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {post.message.substring(0, 50)}&nbsp;
+          <Link style={{ textDecoration: "none" }} to={`/post/${post._id}`}>
+            <Typography color="primary">
+              <strong>See more . . .</strong>
+            </Typography>
+          </Link>
+        </Typography>
+      </CardContent>
+
       <CardActions
         sx={{
           display: "flex",
@@ -196,7 +189,8 @@ function Post({ post, setcurrentid }) {
             color="primary"
             onClick={() => dispatch(deletepost(post._id))}
           >
-            <Delete fontSize="small" /> Delete
+            <Delete fontSize="small" sx={{ color: "red" }} />{" "}
+            <Typography sx={{ color: "red" }}>Delete</Typography>
           </Button>
         )}
       </CardActions>

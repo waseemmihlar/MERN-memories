@@ -1,4 +1,4 @@
-import {makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import { createTheme } from "@mui/material/styles";
 
 // const theme=createTheme({
@@ -14,13 +14,13 @@ import { createTheme } from "@mui/material/styles";
 //   },
 // })
 
-const theme=createTheme()
+const theme = createTheme();
 
 export default makeStyles(() => ({
   appBarSearch: {
     borderRadius: 4,
     marginBottom: "1rem",
-    padding: "1rem",
+    padding: "10px",
     display: "flex",
   },
   pagination: {

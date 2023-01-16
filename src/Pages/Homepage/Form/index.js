@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Button, TextField, Typography, Paper } from "@mui/material";
 import FileBase from "react-file-base64";
-import makeStyles from "./style";
+
+import {
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  createTheme,
+  Box,
+} from "@mui/material";
 import { useDispatch } from "react-redux";
 import { createpost, updatepost, userPosts } from "../../../actions/posts";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import useStyles from "./style";
 
 function Form({ currentid, setcurrentid }) {
+  const theme = createTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const classes = useStyles();
 
   const post = useSelector((state) =>
     currentid ? state.Posts.posts.find((p) => p._id === currentid) : null
@@ -17,7 +28,6 @@ function Form({ currentid, setcurrentid }) {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
-  const classes = makeStyles();
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
     title: "",
@@ -60,7 +70,7 @@ function Form({ currentid, setcurrentid }) {
 
   if (!user?.result?.name) {
     return (
-      <Paper className={classes.paper}>
+      <Paper sx={{ padding: theme.spacing(1) }} elevation={6}>
         <Typography variant="h6" align="center">
           Please Sign In for create your own memory and Like other's memory
         </Typography>
@@ -70,11 +80,30 @@ function Form({ currentid, setcurrentid }) {
 
   return (
     <>
-      <Paper className={classes.paper} elevation={6}>
-        <Typography variant="h6">
-          {currentid ? "Editing" : "Creating"} a Memory
-        </Typography>
-        <form autoComplete="off" className={`${classes.root} ${classes.form}`}>
+      <Paper
+        sx={{
+          padding: theme.spacing(1),
+          "& .MuiTextField-root": {
+            margin: theme.spacing(1),
+          },
+        }}
+        elevation={6}
+      >
+        <form
+          onSubmit={handlesubmit}
+          noValidate
+          autoComplete="off"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6">
+            {currentid ? "Editing" : "Creating"} a Memory
+          </Typography>
+
           <TextField
             name="title"
             variant="outlined"
@@ -107,7 +136,7 @@ function Form({ currentid, setcurrentid }) {
               setPostData({ ...postData, tags: e.target.value.split(",") })
             }
           />
-          <div className={classes.fileInput}>
+          <Box sx={{ width: "100%", margin: "10px 0" }}>
             <FileBase
               type="file"
               multiple={false}
@@ -115,26 +144,17 @@ function Form({ currentid, setcurrentid }) {
                 setPostData({ ...postData, selectedFile: base64 })
               }
             />
-          </div>
-          <Button
-            variant="contained"
-            className={`${classes.buttonSubmit}`}
-            color="primary"
-            fullWidth
-            onClick={handlesubmit}
-            size="large"
-          >
+          </Box>
+          <button type="submit" className={classes.btn}>
             Submit
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="small"
+          </button>
+          <button
+            className={classes.btn}
+            style={{ marginTop: "10px", backgroundColor: "#0395a8" }}
             onClick={clear}
-            fullWidth
           >
             Clear
-          </Button>
+          </button>
         </form>
       </Paper>
 
@@ -143,17 +163,11 @@ function Form({ currentid, setcurrentid }) {
           <strong>{user?.result?.name}</strong>
         </Typography>
         <Typography>
-          {" "}
           You can see your aploaded Post and Modify it as your wish
         </Typography>
-        <Button
-          onClick={handleUserPost}
-          variant="contained"
-          color="primary"
-          fullWidth
-        >
+        <button className={classes.btn} onClick={handleUserPost}>
           View Your Post
-        </Button>
+        </button>
       </Paper>
     </>
   );

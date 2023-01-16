@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Box,
   AppBar,
   Avatar,
   Button,
@@ -49,7 +50,7 @@ function Navbar() {
         margin: "30px 0",
         display: "inline-flex",
         flexDirection: "row",
-        [theme.breakpoints.down("sm")]: { flexDirection: "column" },
+        [theme.breakpoints.down("md")]: { flexDirection: "column" },
         alignItems: "center",
         justifyContent: "space-between",
         padding: "10px 50px",
@@ -73,15 +74,16 @@ function Navbar() {
         }}
       >
         {user ? (
-          <div
+          <Box
             style={{
               display: "flex",
               justifyContent: "space-between",
               flexDirection: "row",
-              width: "400px",
+              alignItems: "center",
+              width: "100%",
               [theme.breakpoints.down("md")]: {
                 width: "auto",
-                marginTop: "20px",
+                marginTop: "30px",
                 justifyContent: "center",
               },
             }}
@@ -96,23 +98,35 @@ function Navbar() {
             >
               {user.result.name.charAt(0)}
             </Avatar>
-            <Typography variant="h6">{user.result.name}</Typography>
-            <Button
-              variant="contained"
-              color="secondary"
+            <Typography variant="h6">{user?.result?.name}</Typography>
+            <button
+              style={{
+                padding: "10px",
+                width: "100px",
+                color: "white",
+                backgroundColor: "#c7006a",
+                borderRadius: "6px",
+                border: "none",
+              }}
               onClick={handleLogout}
             >
               Logout
-            </Button>
-          </div>
+            </button>
+          </Box>
         ) : (
-          <Button
-            variant="contained"
+          <button
+            style={{
+              padding: "10px",
+              width: "100px",
+              color: "white",
+              backgroundColor: "#0359a8",
+              borderRadius: "6px",
+              border: "none",
+            }}
             onClick={() => navigate("/auth")}
-            color="primary"
           >
             Sign in
-          </Button>
+          </button>
         )}
       </Toolbar>
     </AppBar>

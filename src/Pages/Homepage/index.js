@@ -94,14 +94,19 @@ function Home() {
                 value={tags}
                 label="Search tags"
               />
-              <Button
-                color="primary"
-                variant="contained"
+              <button
+                style={{
+                  padding: "10px",
+                  width: "100%",
+                  color: "white",
+                  backgroundColor: "#0359a8",
+                  borderRadius: "6px",
+                  border: "none",
+                }}
                 onClick={searchPost}
-                fullWidth
               >
                 Search
-              </Button>
+              </button>
             </AppBar>
 
             <Form setcurrentid={setcurrentid} currentid={currentid} />

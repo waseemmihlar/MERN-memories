@@ -1,4 +1,4 @@
-import { AppBar, Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./Components/navbar";
 import Home from "./Pages/Homepage";
